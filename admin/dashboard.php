@@ -36,6 +36,9 @@ $recentDeposits = array_slice(array_reverse($deposits), 0, 5);
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
+        html {
+            zoom: 0.9;
+        }
         body { 
             background-color: #020617; 
             color: #f8fafc; 
