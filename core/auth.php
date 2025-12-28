@@ -101,7 +101,7 @@ function loginAdmin($username, $password) {
 // Đăng xuất
 function logout() {
     session_destroy();
-    session_start();
+    // session_start(); // Remove or keep session_start? session_start() is usually called at top of core/functions.php
     return true;
 }
 

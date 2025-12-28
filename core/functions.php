@@ -24,11 +24,15 @@ function generateID($prefix = 'USER') {
 }
 
 function isLoggedIn() {
-    return isset($_SESSION['user_id']);
+    return isset($_SESSION['user_id']) && !isset($_SESSION['admin_id']);
+}
+
+function isAdminLoggedIn() {
+    return isset($_SESSION['admin_id']);
 }
 
 function isAdmin() {
-    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+    return isset($_SESSION['admin_role']) && $_SESSION['admin_role'] === 'admin';
 }
 
 function formatMoney($amount) {
