@@ -133,8 +133,8 @@ if (!$currentUser) {
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Tài khoản thành viên</p>
                         <h2 class="text-3xl font-black text-slate-100 tracking-tight"><?php echo htmlspecialchars($currentUser['username']); ?></h2>
                     </div>
-                    <div class="p-3 bg-yellow-500/10 rounded-2xl text-yellow-500 border border-yellow-500/20">
-                        <?php echo getIcon('crown', 'w-8 h-8'); ?>
+                    <div class="p-3 bg-yellow-500/10 rounded-2xl text-yellow-500 border border-yellow-500/20 relative z-0">
+                        <?php echo getIcon('user', 'w-8 h-8'); ?>
                     </div>
                 </div>
                 
