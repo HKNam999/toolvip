@@ -28,6 +28,7 @@ if (!$currentUser) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
@@ -85,14 +86,40 @@ if (!$currentUser) {
                 <span class="text-xl font-black tracking-tighter text-gradient">TOOLTX2026</span>
             </a>
         </div>
-        <div class="flex gap-4 items-center">
-            <div class="hidden sm:flex flex-col items-end mr-2">
-                <span class="text-[10px] text-slate-500 uppercase font-black tracking-[0.2em]">Hệ thống VIP</span>
-                <span class="text-sm font-bold text-slate-200"><?php echo htmlspecialchars($currentUser['username']); ?></span>
+        
+        <div class="flex items-center gap-4" x-data="{ open: false }">
+            <button @click="open = !open" class="p-2.5 glass rounded-xl text-slate-400 hover:bg-white/5 hover:text-white transition-all border border-white/5">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <div x-show="open" @click.away="open = false" class="absolute right-6 top-20 w-56 glass rounded-[1.5rem] border border-white/10 shadow-2xl py-2 overflow-hidden z-[60]" style="display: none;">
+                <div class="px-4 py-3 border-b border-white/5 mb-2">
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Tài khoản</p>
+                    <p class="text-sm font-bold text-slate-200 truncate"><?php echo htmlspecialchars($currentUser['username']); ?></p>
+                </div>
+                <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('home', 'w-5 h-5 text-yellow-500'); ?>
+                    Trang chủ
+                </a>
+                <a href="deposit.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('wallet', 'w-5 h-5 text-orange-500'); ?>
+                    Nạp tiền
+                </a>
+                <a href="buy-key.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('key', 'w-5 h-5 text-blue-500'); ?>
+                    Mua Key
+                </a>
+                <a href="history.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all border-b border-white/5">
+                    <?php echo getIcon('history', 'w-5 h-5 text-purple-500'); ?>
+                    Lịch sử
+                </a>
+                <a href="../logout.php" class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 text-sm font-bold transition-all">
+                    <?php echo getIcon('logout', 'w-5 h-5'); ?>
+                    Đăng xuất
+                </a>
             </div>
-            <a href="../logout.php" class="p-2.5 glass rounded-xl text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all border border-white/5">
-                <?php echo getIcon('logout', 'w-5 h-5'); ?>
-            </a>
         </div>
     </nav>
 
