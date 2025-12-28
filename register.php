@@ -52,38 +52,92 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng ký - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            background-color: #020617; 
+            color: #f8fafc; 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(234, 179, 8, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.1) 0px, transparent 50%);
+        }
+        .glass { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-[#0f172a] text-white min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white/5 backdrop-blur-lg p-8 rounded-2xl border border-white/10 w-full max-w-md">
-        <div class="text-center mb-8">
-            <img src="assets/images/logo-vip.png" alt="Logo" class="h-16 w-16 mx-auto mb-4 rounded-full border-2 border-yellow-500">
-            <h2 class="text-3xl font-bold text-yellow-500">Đăng Ký</h2>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="glass p-8 rounded-[2.5rem] w-full max-w-md border border-white/10 relative overflow-hidden">
+        <div class="absolute -top-24 -left-24 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl"></div>
+        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-orange-500/10 rounded-full blur-3xl"></div>
+        
+        <div class="text-center mb-10 relative">
+            <div class="inline-block p-1.5 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-2xl shadow-lg shadow-orange-500/20 mb-4">
+                <img src="assets/images/logo-vip.png" alt="Logo" class="h-16 w-16 rounded-xl bg-black">
+            </div>
+            <h2 class="text-4xl font-black tracking-tighter text-gradient">ĐĂNG KÝ</h2>
+            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mt-2">Tham gia cộng đồng TOOLTX2026</p>
         </div>
 
         <?php if ($error): ?>
-            <div class="bg-red-500/20 border border-red-500 text-red-200 p-3 rounded mb-4 text-sm">
+            <div class="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-2xl mb-6 text-sm flex items-center gap-3">
+                <?php echo getIcon('x', 'w-5 h-5'); ?>
                 <?php echo $error; ?>
             </div>
         <?php endif; ?>
 
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-6 relative">
             <div>
-                <label class="block text-sm text-gray-400 mb-1">Tên đăng nhập</label>
-                <input type="text" name="username" required class="w-full bg-white/10 border border-white/20 rounded px-4 py-2 focus:outline-none focus:border-yellow-500">
+                <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Tên đăng nhập</label>
+                <div class="relative group">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-500 transition-colors">
+                        <?php echo getIcon('user', 'w-5 h-5'); ?>
+                    </div>
+                    <input type="text" name="username" required placeholder="Chọn tên đăng nhập..." 
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold">
+                </div>
             </div>
             <div>
-                <label class="block text-sm text-gray-400 mb-1">Mật khẩu</label>
-                <input type="password" name="password" required class="w-full bg-white/10 border border-white/20 rounded px-4 py-2 focus:outline-none focus:border-yellow-500">
+                <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Mật khẩu</label>
+                <div class="relative group">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-500 transition-colors">
+                        <?php echo getIcon('shield', 'w-5 h-5'); ?>
+                    </div>
+                    <input type="password" name="password" required placeholder="Tạo mật khẩu an toàn..." 
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold">
+                </div>
             </div>
             <div>
-                <label class="block text-sm text-gray-400 mb-1">Xác nhận mật khẩu</label>
-                <input type="password" name="confirm_password" required class="w-full bg-white/10 border border-white/20 rounded px-4 py-2 focus:outline-none focus:border-yellow-500">
+                <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Xác nhận mật khẩu</label>
+                <div class="relative group">
+                    <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-500 transition-colors">
+                        <?php echo getIcon('check', 'w-5 h-5'); ?>
+                    </div>
+                    <input type="password" name="confirm_password" required placeholder="Nhập lại mật khẩu..." 
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold">
+                </div>
             </div>
-            <button type="submit" class="w-full bg-yellow-500 text-black font-bold py-2 rounded hover:bg-yellow-400 transition-colors">ĐĂNG KÝ</button>
+            
+            <button type="submit" class="w-full btn-primary text-black font-black py-4 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all text-lg flex items-center justify-center gap-2">
+                ĐĂNG KÝ NGAY
+                <?php echo getIcon('rocket', 'w-5 h-5'); ?>
+            </button>
         </form>
 
-        <p class="mt-6 text-center text-gray-400 text-sm">
-            Đã có tài khoản? <a href="login.php" class="text-yellow-500 hover:underline">Đăng nhập ngay</a>
+        <p class="mt-8 text-center text-slate-500 text-sm font-semibold">
+            Đã có tài khoản? <a href="login.php" class="text-yellow-500 hover:text-yellow-400 transition-colors underline decoration-yellow-500/30 underline-offset-4">Đăng nhập</a>
         </p>
     </div>
 </body>

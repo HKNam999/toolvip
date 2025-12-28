@@ -125,33 +125,33 @@ if (!$currentUser) {
 
             <!-- Quick Stats -->
             <div class="grid grid-cols-1 gap-4">
-                <div class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-yellow-500">
+                <a href="deposit.php" class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-yellow-500 hover:bg-white/5 transition-all">
                     <div class="p-3 bg-yellow-500/10 rounded-2xl text-yellow-500">
                         <?php echo getIcon('wallet', 'w-6 h-6'); ?>
                     </div>
                     <div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Nạp tiền</p>
-                        <a href="deposit.php" class="text-sm font-bold hover:text-yellow-500 transition-colors">Thực hiện nạp ngay →</a>
+                        <span class="text-sm font-bold text-slate-200">Thực hiện nạp ngay →</span>
                     </div>
-                </div>
-                <div class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-orange-500">
+                </a>
+                <a href="buy-key.php" class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-orange-500 hover:bg-white/5 transition-all">
                     <div class="p-3 bg-orange-500/10 rounded-2xl text-orange-500">
                         <?php echo getIcon('key', 'w-6 h-6'); ?>
                     </div>
                     <div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Mua Key</p>
-                        <a href="buy-key.php" class="text-sm font-bold hover:text-orange-500 transition-colors">Kích hoạt Tool ngay →</a>
+                        <span class="text-sm font-bold text-slate-200">Kích hoạt Tool ngay →</span>
                     </div>
-                </div>
-                <div class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-blue-500">
+                </a>
+                <a href="history.php" class="glass p-6 rounded-[2rem] flex items-center gap-5 border-l-4 border-blue-500 hover:bg-white/5 transition-all">
                     <div class="p-3 bg-blue-500/10 rounded-2xl text-blue-500">
                         <?php echo getIcon('history', 'w-6 h-6'); ?>
                     </div>
                     <div>
                         <p class="text-slate-500 text-[10px] font-black uppercase tracking-widest">Lịch sử</p>
-                        <a href="history.php" class="text-sm font-bold hover:text-blue-500 transition-colors">Xem lại giao dịch →</a>
+                        <span class="text-sm font-bold text-slate-200">Xem lại giao dịch →</span>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
