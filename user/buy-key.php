@@ -91,17 +91,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mua Key - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        html {
+            zoom: 0.9;
+        }
         body { 
-            background-color: #020617; 
+            background-color: #0f172a; 
             color: #f8fafc; 
             font-family: 'Plus Jakarta Sans', sans-serif;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(234, 179, 8, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(249, 115, 22, 0.05) 0px, transparent 50%);
         }
         .glass { 
-            background: rgba(255, 255, 255, 0.03); 
-            backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+            background: rgba(255, 255, 255, 0.05); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
         }
         .text-gradient {
             background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
@@ -112,32 +119,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
             box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
         }
+        .package-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .package-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(251, 191, 36, 0.4);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6">
+    <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <a href="dashboard.php" class="flex items-center gap-2">
-                <div class="p-1 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-lg">
-                    <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-md bg-black">
+                <div class="p-1.5 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
+                    <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-lg bg-black">
                 </div>
                 <span class="text-xl font-black tracking-tighter text-gradient">TOOLTX2026</span>
             </a>
         </div>
-        <a href="dashboard.php" class="text-sm font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
-            <?php echo getIcon('home', 'w-5 h-5'); ?>
-            Quay lại
-        </a>
+        
+        <div class="flex items-center gap-4" x-data="{ open: false }">
+            <button @click="open = !open" class="p-2.5 glass rounded-xl text-slate-400 hover:bg-white/5 hover:text-white transition-all border border-white/5">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <div x-show="open" @click.away="open = false" class="absolute right-6 top-20 w-56 glass rounded-[1.5rem] border border-white/10 shadow-2xl py-2 overflow-hidden z-[60]" style="display: none;">
+                <div class="px-4 py-3 border-b border-white/5 mb-2">
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Tài khoản</p>
+                    <p class="text-sm font-bold text-slate-200 truncate"><?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                </div>
+                <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('home', 'w-5 h-5 text-yellow-500'); ?>
+                    Trang chủ
+                </a>
+                <a href="deposit.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('wallet', 'w-5 h-5 text-orange-500'); ?>
+                    Nạp tiền
+                </a>
+                <a href="buy-key.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('key', 'w-5 h-5 text-blue-500'); ?>
+                    Mua Key
+                </a>
+                <a href="history.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all border-b border-white/5">
+                    <?php echo getIcon('history', 'w-5 h-5 text-purple-500'); ?>
+                    Lịch sử
+                </a>
+                <a href="../logout.php" class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 text-sm font-bold transition-all">
+                    <?php echo getIcon('logout', 'w-5 h-5'); ?>
+                    Đăng xuất
+                </a>
+            </div>
+        </div>
     </nav>
 
-    <main class="p-6 max-w-6xl mx-auto w-full mt-8">
-        <div class="flex items-center gap-4 mb-8">
-            <div class="p-3 bg-orange-500/10 rounded-2xl text-orange-500">
-                <?php echo getIcon('key', 'w-8 h-8'); ?>
-            </div>
+    <main class="p-6 max-w-7xl mx-auto w-full mt-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-                <h2 class="text-3xl font-black">Mua Key Kích Hoạt</h2>
-                <p class="text-sm text-slate-400">Chọn gói thời gian phù hợp để bắt đầu sử dụng tool</p>
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+                    <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest">Hệ thống kích hoạt tự động</span>
+                </div>
+                <h2 class="text-4xl font-black tracking-tight mb-2">Mua Key Kích Hoạt</h2>
+                <p class="text-slate-400">Chọn gói thời gian để bắt đầu làm chủ cuộc chơi</p>
+            </div>
+            <div class="glass p-4 rounded-2xl flex items-center gap-4">
+                <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
+                    <?php echo getIcon('wallet', 'w-6 h-6'); ?>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Số dư của bạn</p>
+                    <?php 
+                        $users = readJSON('users');
+                        $balance = 0;
+                        foreach($users as $u) if($u['id'] === $_SESSION['user_id']) $balance = $u['balance'];
+                    ?>
+                    <p class="text-xl font-black text-gradient"><?php echo formatMoney($balance); ?></p>
+                </div>
             </div>
         </div>
 
@@ -162,76 +223,97 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         <?php endif; ?>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <?php foreach ($packages as $p): ?>
-                    <div class="glass p-6 rounded-3xl border border-white/5 hover:border-yellow-500/30 transition-all group relative overflow-hidden">
-                        <div class="absolute -right-4 -top-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                            <?php echo getIcon($p['icon'], 'w-24 h-24'); ?>
+                    <div class="glass p-6 rounded-[2.5rem] border border-white/5 package-card group relative overflow-hidden flex flex-col">
+                        <div class="absolute -right-6 -top-6 opacity-[0.03] group-hover:opacity-[0.08] transition-all group-hover:scale-110 duration-500">
+                            <?php echo getIcon($p['icon'], 'w-32 h-32'); ?>
                         </div>
+                        
                         <div class="flex justify-between items-start mb-6">
-                            <div class="p-3 bg-white/5 rounded-2xl text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-all">
+                            <div class="p-4 bg-white/5 rounded-2xl text-yellow-500 group-hover:bg-yellow-500 group-hover:text-black transition-all duration-300">
                                 <?php echo getIcon($p['icon'], 'w-6 h-6'); ?>
                             </div>
-                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-500">Gói Tool</span>
+                            <?php if($p['name'] === 'Vĩnh Viễn'): ?>
+                                <span class="px-3 py-1 bg-red-500/20 text-red-500 rounded-full text-[10px] font-black uppercase tracking-widest border border-red-500/30">Hời nhất</span>
+                            <?php endif; ?>
                         </div>
-                        <h3 class="text-xl font-black mb-1"><?php echo $p['name']; ?></h3>
-                        <div class="text-2xl font-black text-gradient mb-6"><?php echo formatMoney($p['price']); ?></div>
+
+                        <div class="flex-grow">
+                            <h3 class="text-2xl font-black mb-1"><?php echo $p['name']; ?></h3>
+                            <p class="text-slate-500 text-xs font-bold uppercase tracking-widest mb-4">Gói dịch vụ</p>
+                            <div class="text-3xl font-black text-gradient mb-8"><?php echo formatMoney($p['price']); ?></div>
+                        </div>
                         
-                        <form method="POST" class="flex gap-2">
+                        <form method="POST" class="mt-auto space-y-4">
                             <input type="hidden" name="package_id" value="<?php echo $p['id']; ?>">
-                            <div class="flex-1 relative">
-                                <input type="number" name="quantity" value="1" min="1" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-yellow-500">
-                                <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-600">SL</span>
+                            <div class="flex gap-3">
+                                <div class="w-24 relative">
+                                    <input type="number" name="quantity" value="1" min="1" class="w-full bg-white/5 border border-white/10 rounded-2xl px-4 py-3 text-sm focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-bold">
+                                    <span class="absolute -top-2 left-3 bg-[#0f172a] px-1 text-[8px] font-black text-slate-500 uppercase">Số lượng</span>
+                                </div>
+                                <button type="submit" class="flex-1 btn-primary text-black py-3 rounded-2xl text-xs font-black hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                                    MUA NGAY
+                                    <?php echo getIcon('rocket', 'w-4 h-4'); ?>
+                                </button>
                             </div>
-                            <button type="submit" class="bg-white/10 hover:bg-yellow-500 hover:text-black px-4 py-2 rounded-xl text-xs font-black transition-all">MUA</button>
                         </form>
                     </div>
                 <?php endforeach; ?>
             </div>
 
             <div class="space-y-6">
-                <div class="glass p-8 rounded-3xl border-l-4 border-blue-500">
-                    <h3 class="text-lg font-black mb-4 flex items-center gap-2">
-                        <span class="text-blue-500"><?php echo getIcon('check', 'w-5 h-5'); ?></span>
-                        Ưu Đãi Giảm Giá
+                <div class="glass p-8 rounded-[2.5rem] border-l-4 border-green-500 relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 opacity-5">
+                        <?php echo getIcon('check', 'w-24 h-24'); ?>
+                    </div>
+                    <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                        <span class="p-2 bg-green-500/10 rounded-xl text-green-500"><?php echo getIcon('check', 'w-5 h-5'); ?></span>
+                        Siêu Ưu Đãi
                     </h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl">
-                            <span class="text-sm font-bold text-slate-400">Mua từ 3 key</span>
-                            <span class="text-sm font-black text-green-500">-15%</span>
+                    <div class="space-y-4 relative z-10">
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-green-500/30 transition-all">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mua từ 3 key</span>
+                                <span class="px-2 py-0.5 bg-green-500 text-black rounded-lg text-[10px] font-black">-15%</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 italic">Tiết kiệm đáng kể</p>
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl">
-                            <span class="text-sm font-bold text-slate-400">Mua từ 6 key</span>
-                            <span class="text-sm font-black text-green-500">-25%</span>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-green-500/30 transition-all">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mua từ 6 key</span>
+                                <span class="px-2 py-0.5 bg-green-500 text-black rounded-lg text-[10px] font-black">-25%</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 italic">Lựa chọn thông minh</p>
                         </div>
-                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl">
-                            <span class="text-sm font-bold text-slate-400">Mua từ 10 key</span>
-                            <span class="text-sm font-black text-green-500">-35%</span>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5 hover:border-green-500/30 transition-all">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Mua từ 10 key</span>
+                                <span class="px-2 py-0.5 bg-green-500 text-black rounded-lg text-[10px] font-black">-35%</span>
+                            </div>
+                            <p class="text-[10px] text-slate-500 italic">Giá cực sốc</p>
                         </div>
                     </div>
-                    <p class="mt-6 text-[11px] text-slate-500 leading-relaxed italic">
-                        * Hệ thống tự động áp dụng giảm giá khi bạn thay đổi số lượng mua.
-                    </p>
                 </div>
 
-                <div class="glass p-8 rounded-3xl">
-                    <h3 class="text-lg font-black mb-4 flex items-center gap-2">
-                        <span class="text-yellow-500"><?php echo getIcon('history', 'w-5 h-5'); ?></span>
-                        Lưu Ý
+                <div class="glass p-8 rounded-[2.5rem] border-l-4 border-yellow-500">
+                    <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                        <span class="p-2 bg-yellow-500/10 rounded-xl text-yellow-500"><?php echo getIcon('shield', 'w-5 h-5'); ?></span>
+                        Lưu Ý VIP
                     </h3>
-                    <ul class="space-y-3">
-                        <li class="text-xs text-slate-400 flex gap-2">
-                            <span class="text-yellow-500">•</span>
-                            Key có hiệu lực ngay sau khi mua.
+                    <ul class="space-y-4">
+                        <li class="text-xs text-slate-400 flex gap-3">
+                            <span class="text-yellow-500 mt-1">✦</span>
+                            <span>Hệ thống tự động kích hoạt key ngay sau khi thanh toán.</span>
                         </li>
-                        <li class="text-xs text-slate-400 flex gap-2">
-                            <span class="text-yellow-500">•</span>
-                            Mỗi key chỉ sử dụng cho 1 tài khoản.
+                        <li class="text-xs text-slate-400 flex gap-3">
+                            <span class="text-yellow-500 mt-1">✦</span>
+                            <span>Mỗi key có thể sử dụng cho một tài khoản duy nhất.</span>
                         </li>
-                        <li class="text-xs text-slate-400 flex gap-2">
-                            <span class="text-yellow-500">•</span>
-                            Không hoàn tiền sau khi đã tạo key.
+                        <li class="text-xs text-slate-400 flex gap-3">
+                            <span class="text-yellow-500 mt-1">✦</span>
+                            <span>Hỗ trợ kỹ thuật 24/7 qua kênh Telegram.</span>
                         </li>
                     </ul>
                 </div>
