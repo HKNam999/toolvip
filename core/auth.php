@@ -4,21 +4,6 @@
  * Xử lý xác thực người dùng và admin riêng biệt
  */
 
-// Kiểm tra xem người dùng thường đã đăng nhập
-function isLoggedIn() {
-    return isset($_SESSION['user_id']) && !isset($_SESSION['admin_id']);
-}
-
-// Kiểm tra xem admin đã đăng nhập
-function isAdminLoggedIn() {
-    return isset($_SESSION['admin_id']);
-}
-
-// Kiểm tra quyền admin (dùng cho tương thích ngược)
-function isAdmin() {
-    return isAdminLoggedIn();
-}
-
 // Lấy thông tin người dùng hiện tại
 function getCurrentUser() {
     if (!isLoggedIn()) {
