@@ -30,29 +30,46 @@ usort($userKeys, function($a, $b) {
     <title>Lịch Sử Giao Dịch - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        html {
+            zoom: 0.9;
+        }
         body { background-color: #0f172a; color: white; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .icon-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(249, 115, 22, 0.2) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <nav class="p-4 glass flex justify-between items-center">
-        <div class="flex items-center gap-2">
+    <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
             <a href="dashboard.php" class="flex items-center gap-2">
-                <img src="../assets/images/logo-vip.png" alt="Logo" class="h-10 w-10 rounded-full border-2 border-yellow-500">
-                <span class="text-xl font-bold text-yellow-500">TOOLTX2026</span>
+                <div class="p-1.5 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
+                    <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-lg bg-black">
+                </div>
+                <span class="text-xl font-black tracking-tighter text-yellow-500">TOOLTX2026</span>
             </a>
         </div>
-        <a href="dashboard.php" class="text-sm text-gray-400 hover:text-white">Quay lại</a>
+        <a href="dashboard.php" class="p-2.5 glass rounded-xl text-slate-400 hover:bg-white/5 hover:text-white transition-all border border-white/5">
+            <?php echo getIcon('home', 'w-5 h-5'); ?>
+        </a>
     </nav>
 
-    <main class="p-6 max-w-6xl mx-auto w-full">
-        <h2 class="text-2xl font-bold mb-6 text-yellow-500">Lịch Sử Giao Dịch</h2>
+    <main class="p-6 max-w-7xl mx-auto w-full mt-6">
+        <h2 class="text-3xl font-black mb-8 flex items-center gap-3">
+            <span class="p-2 bg-yellow-500/10 rounded-xl text-yellow-500"><?php echo getIcon('history', 'w-6 h-6'); ?></span>
+            Lịch Sử Giao Dịch
+        </h2>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Lịch sử nạp tiền -->
-            <div class="glass p-6 rounded-xl">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <span>💰</span> Lịch Sử Nạp Tiền
+            <div class="glass p-8 rounded-[2.5rem] border border-white/5">
+                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                    <div class="p-3 icon-box rounded-2xl text-yellow-500">
+                        <?php echo getIcon('wallet', 'w-6 h-6'); ?>
+                    </div>
+                    Lịch Sử Nạp Tiền
                 </h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
@@ -91,9 +108,12 @@ usort($userKeys, function($a, $b) {
             </div>
 
             <!-- Lịch sử mua key -->
-            <div class="glass p-6 rounded-xl">
-                <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                    <span>🔑</span> Lịch Sử Mua Key
+            <div class="glass p-8 rounded-[2.5rem] border border-white/5">
+                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
+                    <div class="p-3 icon-box rounded-2xl text-orange-500">
+                        <?php echo getIcon('key', 'w-6 h-6'); ?>
+                    </div>
+                    Lịch Sử Mua Key
                 </h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
