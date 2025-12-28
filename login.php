@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/functions.php';
+require_once 'core/functions.php';
 
 if (isLoggedIn()) {
     header('Location: user/dashboard.php');
@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Đăng nhập - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/transitions.css">
     <style>
         body { 
             background-color: #020617; 
@@ -113,5 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Chưa có tài khoản? <a href="register.php" class="text-yellow-500 hover:text-yellow-400 transition-colors underline decoration-yellow-500/30 underline-offset-4">Đăng ký ngay</a>
         </p>
     </div>
+    <script src="assets/js/transitions.js"></script>
 </body>
 </html>

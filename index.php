@@ -1,5 +1,5 @@
 <?php
-require_once 'includes/functions.php';
+require_once 'core/functions.php';
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -9,6 +9,7 @@ require_once 'includes/functions.php';
     <title>TOOLTX2026 - Đỉnh Cao Dự Đoán</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/transitions.css">
     <style>
         body { 
             background-color: #020617; 
@@ -134,5 +135,6 @@ require_once 'includes/functions.php';
         </div>
         <p>&copy; 2026 TOOLTX2026. Thiết kế bởi Manus Team.</p>
     </footer>
+    <script src="assets/js/transitions.js"></script>
 </body>
 </html>

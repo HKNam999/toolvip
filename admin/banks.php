@@ -1,9 +1,16 @@
 <?php
-require_once '../includes/functions.php';
+require_once '../core/functions.php';
+require_once '../core/auth.php';
 
-if (!isAdmin()) {
-    header('Location: ../login.php');
-    exit;
+requireAdmin();
+
+// Ghi log hành động
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add_bank'])) {
+        logAdminAction('ADD_BANK', 'Thêm ngân hàng: ' . $_POST['bank_name']);
+    } elseif (isset($_POST['delete_bank'])) {
+        logAdminAction('DELETE_BANK', 'Xóa ngân hàng ID: ' . $_POST['bank_id']);
+    }
 }
 
 $banks_list = [
@@ -60,6 +67,7 @@ $currentBanks = readJSON('banks');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý Ngân hàng - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
         body { background-color: #0f172a; color: white; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -138,5 +146,6 @@ $currentBanks = readJSON('banks');
             </div>
         </div>
     </main>
+    <script src="../assets/js/transitions.js"></script>
 </body>
 </html>

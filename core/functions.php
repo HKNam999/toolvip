@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-define('DATA_PATH', __DIR__ . '/../data/');
+define('DATA_PATH', dirname(__DIR__) . '/data/');
 require_once __DIR__ . '/icons.php';
 
 function readJSON($filename) {

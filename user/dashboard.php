@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/functions.php';
+require_once '../core/functions.php';
 
 if (!isLoggedIn()) {
     header('Location: ../login.php');
@@ -29,6 +29,7 @@ if (!$currentUser) {
     <title>Dashboard - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
         body { 
             background-color: #020617; 
@@ -212,5 +213,6 @@ if (!$currentUser) {
             </div>
         </div>
     </main>
+    <script src="../assets/js/transitions.js"></script>
 </body>
 </html>

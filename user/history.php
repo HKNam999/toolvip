@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/functions.php';
+require_once '../core/functions.php';
 
 if (!isLoggedIn()) {
     header('Location: ../login.php');
