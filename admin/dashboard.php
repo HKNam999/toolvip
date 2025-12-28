@@ -40,14 +40,14 @@ $recentDeposits = array_slice(array_reverse($deposits), 0, 5);
             zoom: 0.9;
         }
         body { 
-            background-color: #020617; 
+            background-color: #0f172a; 
             color: #f8fafc; 
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .glass { 
-            background: rgba(255, 255, 255, 0.03); 
+            background: rgba(255, 255, 255, 0.05); 
             backdrop-filter: blur(12px); 
-            border: 1px solid rgba(255, 255, 255, 0.08); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
         }
         .admin-card {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
