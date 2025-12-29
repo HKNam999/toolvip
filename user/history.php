@@ -102,19 +102,19 @@ usort($userKeys, function($a, $b) {
         <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-10 relative overflow-hidden">
             <div class="absolute -right-12 -top-12 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl"></div>
             
-            <div class="flex items-center gap-6 relative z-10">
-                <a href="dashboard.php" class="p-4 bg-slate-800/80 backdrop-blur-md rounded-2xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-xl group">
-                    <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="flex items-center gap-4 relative z-10">
+                <a href="dashboard.php" class="p-2.5 bg-slate-800/80 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
+                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                     </svg>
                 </a>
-                <div class="flex items-center gap-5">
-                    <div class="p-4 bg-yellow-500/10 rounded-2xl text-yellow-500">
-                        <?php echo getIcon('history', 'w-8 h-8'); ?>
+                <div class="flex items-center gap-4">
+                    <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
+                        <?php echo getIcon('history', 'w-6 h-6'); ?>
                     </div>
                     <div>
-                        <h2 class="text-3xl font-black">Lịch Sử Giao Dịch</h2>
-                        <p class="text-sm text-slate-400">Theo dõi dòng tiền và mã key đã mua</p>
+                        <h2 class="text-2xl font-black">Lịch Sử</h2>
+                        <p class="text-xs text-slate-400">Theo dõi giao dịch</p>
                     </div>
                 </div>
             </div>

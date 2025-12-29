@@ -190,19 +190,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="absolute -right-12 -top-12 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                <div class="flex items-center gap-6">
-                    <a href="dashboard.php" class="p-4 bg-slate-800/80 backdrop-blur-md rounded-2xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-xl group">
-                        <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="flex items-center gap-4">
+                    <a href="dashboard.php" class="p-2.5 bg-slate-800/80 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
+                        <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
                         </svg>
                     </a>
                     <div>
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-3">
-                            <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
-                            <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest">Hệ thống kích hoạt tự động</span>
+                        <div class="inline-flex items-center gap-2 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-1">
+                            <span class="w-1 h-1 bg-orange-500 rounded-full animate-pulse"></span>
+                            <span class="text-[8px] font-black text-orange-500 uppercase tracking-widest">Tự động</span>
                         </div>
-                        <h2 class="text-4xl font-black tracking-tight mb-2">Mua Key Kích Hoạt</h2>
-                        <p class="text-slate-400">Chọn gói thời gian để bắt đầu làm chủ cuộc chơi</p>
+                        <h2 class="text-2xl font-black tracking-tight">Mua Key</h2>
                     </div>
                 </div>
                 
