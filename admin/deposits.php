@@ -53,15 +53,15 @@ $deposits = readJSON('deposits');
 <body class="min-h-screen p-6">
     <div class="max-w-7xl mx-auto">
         <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-black text-red-500">DUYỆT NẠP TIỀN</h1>
-            <a href="dashboard.php" class="px-4 py-2 glass rounded-lg hover:bg-white/10 transition-all">Quay lại</a>
+            <h1 class="text-3xl font-black text-red-500 uppercase">Duyệt Nạp Tiền</h1>
+            <a href="dashboard.php" class="px-4 py-2 glass rounded-lg hover:bg-white/10 transition-all text-sm font-bold">Quay lại</a>
         </div>
         
-        <div class="glass rounded-2xl overflow-hidden">
+        <div class="glass rounded-2xl overflow-hidden border border-white/5">
             <table class="w-full text-left">
-                <thead class="bg-white/5 text-slate-400 uppercase text-xs font-black">
+                <thead class="bg-white/5 text-slate-400 uppercase text-[10px] font-black tracking-wider">
                     <tr>
-                        <th class="px-6 py-4">ID</th>
+                        <th class="px-6 py-4">Mã GD</th>
                         <th class="px-6 py-4">Người nạp</th>
                         <th class="px-6 py-4">Số tiền</th>
                         <th class="px-6 py-4">Trạng thái</th>
@@ -69,29 +69,35 @@ $deposits = readJSON('deposits');
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-white/5">
-                    <?php foreach ($deposits as $d): ?>
-                    <tr class="hover:bg-white/5 transition-colors">
-                        <td class="px-6 py-4 font-mono text-xs"><?php echo htmlspecialchars($d['id'] ?? ''); ?></td>
-                        <td class="px-6 py-4 font-bold"><?php echo htmlspecialchars($d['username'] ?? $d['user_id'] ?? 'Unknown'); ?></td>
-                        <td class="px-6 py-4 text-green-400 font-bold"><?php echo formatMoney($d['amount'] ?? 0); ?></td>
-                        <td class="px-6 py-4">
-                            <span class="px-2 py-1 rounded-lg bg-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500/10 text-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500 text-[10px] font-black uppercase">
-                                <?php echo $d['status']; ?>
-                            </span>
-                        </td>
-                        <td class="px-6 py-4">
-                            <?php if ($d['status'] === 'pending'): ?>
-                            <form method="POST" class="inline-flex gap-2">
-                                <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
-                                <button name="action" value="approve" class="px-3 py-1 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500 hover:text-white transition-all text-xs font-bold">Duyệt</button>
-                                <button name="action" value="reject" class="px-3 py-1 bg-red-500/20 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all text-xs font-bold">Hủy</button>
-                            </form>
-                            <?php else: ?>
-                            <span class="text-slate-500 text-xs">Đã xử lý</span>
-                            <?php endif; ?>
-                        </td>
+                    <?php if (empty($deposits)): ?>
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center text-slate-500 italic">Chưa có giao dịch nào</td>
                     </tr>
-                    <?php endforeach; ?>
+                    <?php else: ?>
+                        <?php foreach (array_reverse($deposits) as $d): ?>
+                        <tr class="hover:bg-white/5 transition-colors">
+                            <td class="px-6 py-4 font-mono text-[11px] text-slate-400"><?php echo htmlspecialchars($d['id'] ?? ''); ?></td>
+                            <td class="px-6 py-4 font-bold text-sm"><?php echo htmlspecialchars($d['username'] ?? $d['user_id'] ?? 'N/A'); ?></td>
+                            <td class="px-6 py-4 text-green-400 font-black text-sm"><?php echo formatMoney($d['amount'] ?? 0); ?></td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 rounded-lg bg-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500/10 text-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500 text-[10px] font-black uppercase tracking-tighter">
+                                    <?php echo $d['status']; ?>
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <?php if ($d['status'] === 'pending'): ?>
+                                <form method="POST" class="inline-flex gap-2">
+                                    <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
+                                    <button name="action" value="approve" class="px-3 py-1.5 bg-green-500/20 text-green-500 rounded-lg hover:bg-green-500 hover:text-black transition-all text-[11px] font-black uppercase tracking-tighter">Duyệt</button>
+                                    <button name="action" value="reject" class="px-3 py-1.5 bg-red-500/20 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-all text-[11px] font-black uppercase tracking-tighter">Hủy</button>
+                                </form>
+                                <?php else: ?>
+                                <span class="text-slate-600 text-[10px] font-black uppercase tracking-tighter">Đã xử lý</span>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
