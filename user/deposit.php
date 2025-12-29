@@ -244,84 +244,183 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
                 </form>
             </div>
         <?php else: ?>
-            <div class="glass p-10 rounded-[3rem] border border-white/5 text-center relative overflow-hidden">
-                <div class="absolute -left-24 -top-24 w-64 h-64 bg-green-500/5 rounded-full blur-3xl"></div>
-                
-                <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center text-green-500 mx-auto mb-8">
-                    <?php echo getIcon('check', 'w-10 h-10'); ?>
-                </div>
-                <h3 class="text-3xl font-black text-green-500 mb-3">Đơn nạp đã sẵn sàng!</h3>
-                <p class="text-slate-400 mb-12 font-medium">Vui lòng quét mã QR hoặc chuyển khoản chính xác nội dung bên dưới.</p>
-                
-                <div class="flex flex-col lg:flex-row gap-12 items-center justify-center mb-12">
-                    <div class="qr-container group relative">
-                        <?php 
-                        $qr_url = "https://img.vietqr.io/image/{$order['bank_name']}-{$order['account_no']}-qr_only.png?amount={$order['amount']}&addInfo={$order['description']}&accountName=" . urlencode($order['account_name']);
-                        ?>
-                        <img src="<?php echo $qr_url; ?>" alt="VietQR" class="w-64 h-64 rounded-xl">
-                        <div class="mt-4 text-black font-black text-[10px] tracking-[0.2em] uppercase">Quét để thanh toán</div>
-                        <div class="absolute inset-0 border-4 border-yellow-500/20 rounded-[24px] pointer-events-none group-hover:border-yellow-500/50 transition-all"></div>
-                    </div>
-                    
-                    <div class="flex-1 w-full max-w-md space-y-4">
-                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Left: Status & QR -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="glass p-8 rounded-[3rem] border border-white/5 text-center relative overflow-hidden">
+                        <div class="absolute -left-24 -top-24 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
+                        
+                        <div class="flex items-center justify-between mb-8">
                             <div class="text-left">
-                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Ngân hàng</p>
-                                <p class="font-black text-slate-200"><?php echo $order['bank_name']; ?></p>
+                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Số dư hiện tại</p>
+                                <p class="text-2xl font-black text-gradient" id="current-balance"><?php echo formatMoney($currentUser['balance'] ?? 0); ?></p>
                             </div>
-                            <button onclick="navigator.clipboard.writeText('<?php echo $order['bank_name']; ?>')" class="p-2 hover:text-yellow-500 transition-colors"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
-                        </div>
-                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
-                            <div class="text-left">
-                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Mã giao dịch</p>
-                                <p class="font-black text-slate-200 text-xl tracking-wider"><?php echo $order['id']; ?></p>
-                            </div>
-                            <button onclick="navigator.clipboard.writeText('<?php echo $order['id']; ?>')" class="p-2 hover:text-yellow-500 transition-colors"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
-                        </div>
-                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
-                            <div class="text-left">
-                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Số tài khoản</p>
-                                <p class="font-black text-slate-200 text-xl tracking-wider"><?php echo $order['account_no']; ?></p>
-                            </div>
-                            <button onclick="navigator.clipboard.writeText('<?php echo $order['account_no']; ?>')" class="p-2 hover:text-yellow-500 transition-colors"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
-                        </div>
-                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
-                            <div class="text-left">
-                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Chủ tài khoản</p>
-                                <p class="font-black text-slate-200 uppercase"><?php echo $order['account_name']; ?></p>
+                            <div class="flex items-center gap-2 px-3 py-1 bg-yellow-500/10 rounded-full border border-yellow-500/20">
+                                <span class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse"></span>
+                                <span class="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Đang chờ thanh toán</span>
                             </div>
                         </div>
-                        <div class="glass p-5 rounded-2xl border-2 border-yellow-500/30 bg-yellow-500/5 flex justify-between items-center group hover:bg-yellow-500/10 transition-all">
-                            <div class="text-left">
-                                <p class="text-[10px] text-yellow-500 font-black uppercase tracking-widest mb-1">Nội dung chuyển khoản</p>
-                                <p class="font-black text-yellow-500 text-2xl tracking-widest"><?php echo $order['description']; ?></p>
-                            </div>
-                            <button onclick="navigator.clipboard.writeText('<?php echo $order['description']; ?>')" class="p-3 bg-yellow-500 text-black rounded-xl hover:scale-105 transition-all"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
+
+                        <div class="qr-container group relative mx-auto inline-block mb-6">
+                            <?php 
+                            $qr_url = "https://img.vietqr.io/image/{$order['bank_name']}-{$order['account_no']}-qr_only.png?amount={$order['amount']}&addInfo={$order['description']}&accountName=" . urlencode($order['account_name']);
+                            ?>
+                            <img src="<?php echo $qr_url; ?>" alt="VietQR" class="w-64 h-64 rounded-xl relative z-10">
+                            <div class="absolute inset-0 border-4 border-yellow-500/20 rounded-[24px] pointer-events-none group-hover:border-yellow-500/50 transition-all z-20"></div>
+                            
+                            <!-- Scanner Effect -->
+                            <div class="absolute inset-x-4 top-4 h-0.5 bg-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.5)] animate-scan z-30"></div>
                         </div>
-                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
-                            <div class="text-left">
-                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Số tiền</p>
-                                <p class="font-black text-slate-200 text-xl"><?php echo formatMoney($order['amount']); ?></p>
+                        
+                        <div class="space-y-2 mb-8">
+                            <h3 class="text-2xl font-black text-slate-100">Quét mã để nạp tiền</h3>
+                            <p class="text-sm text-slate-400">Hệ thống sẽ tự động cập nhật sau khi nhận được tiền</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="glass p-4 rounded-2xl border border-white/5">
+                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Trạng thái</p>
+                                <p class="text-sm font-bold text-yellow-500 flex items-center justify-center gap-2" id="order-status">
+                                    <svg class="animate-spin h-3 w-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    Kiểm tra...
+                                </p>
+                            </div>
+                            <div class="glass p-4 rounded-2xl border border-white/5">
+                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Thời gian còn lại</p>
+                                <p class="text-sm font-bold text-slate-200" id="expiry-timer">19:59</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-yellow-500/10 border border-yellow-500/20 p-6 rounded-3xl flex items-start gap-4 text-left mb-8">
-                    <div class="p-2 bg-yellow-500/20 rounded-lg text-yellow-500 mt-1">
-                        <?php echo getIcon('shield', 'w-5 h-5'); ?>
+                <!-- Right: Bank Info -->
+                <div class="lg:col-span-5 space-y-4">
+                    <div class="glass p-6 rounded-[2.5rem] border border-white/5">
+                        <h4 class="text-xs font-black text-slate-500 uppercase tracking-[0.2em] mb-6 ml-1">Thông tin chuyển khoản</h4>
+                        
+                        <div class="space-y-3">
+                            <div class="glass p-4 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div class="text-left">
+                                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-0.5">Mã giao dịch</p>
+                                    <p class="font-black text-slate-200 text-base tracking-wider"><?php echo $order['id']; ?></p>
+                                </div>
+                                <button onclick="copyText('<?php echo $order['id']; ?>', this)" class="p-2 hover:text-yellow-500 transition-colors">
+                                    <?php echo getIcon('copy', 'w-4 h-4'); ?>
+                                </button>
+                            </div>
+
+                            <div class="glass p-4 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div class="text-left">
+                                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-0.5">Ngân hàng</p>
+                                    <p class="font-black text-slate-200"><?php echo $order['bank_name']; ?></p>
+                                </div>
+                                <button onclick="copyText('<?php echo $order['bank_name']; ?>', this)" class="p-2 hover:text-yellow-500 transition-colors">
+                                    <?php echo getIcon('copy', 'w-4 h-4'); ?>
+                                </button>
+                            </div>
+
+                            <div class="glass p-4 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div class="text-left">
+                                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-0.5">Số tài khoản</p>
+                                    <p class="font-black text-slate-200 text-lg tracking-wider"><?php echo $order['account_no']; ?></p>
+                                </div>
+                                <button onclick="copyText('<?php echo $order['account_no']; ?>', this)" class="p-2 hover:text-yellow-500 transition-colors">
+                                    <?php echo getIcon('copy', 'w-4 h-4'); ?>
+                                </button>
+                            </div>
+
+                            <div class="glass p-4 rounded-2xl border-2 border-yellow-500/30 bg-yellow-500/5 flex justify-between items-center group hover:bg-yellow-500/10 transition-all">
+                                <div class="text-left">
+                                    <p class="text-[9px] text-yellow-500 font-black uppercase tracking-widest mb-0.5">Nội dung chuyển khoản</p>
+                                    <p class="font-black text-yellow-500 text-xl tracking-widest"><?php echo $order['description']; ?></p>
+                                </div>
+                                <button onclick="copyText('<?php echo $order['description']; ?>', this)" class="p-3 bg-yellow-500 text-black rounded-xl hover:scale-105 transition-all">
+                                    <?php echo getIcon('copy', 'w-4 h-4'); ?>
+                                </button>
+                            </div>
+
+                            <div class="glass p-4 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+                                <div class="text-left">
+                                    <p class="text-[9px] text-slate-500 font-black uppercase tracking-widest mb-0.5">Số tiền</p>
+                                    <p class="font-black text-slate-200 text-lg"><?php echo formatMoney($order['amount']); ?></p>
+                                </div>
+                                <button onclick="copyText('<?php echo $order['amount']; ?>', this)" class="p-2 hover:text-yellow-500 transition-colors">
+                                    <?php echo getIcon('copy', 'w-4 h-4'); ?>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-sm font-black text-yellow-500 uppercase tracking-widest mb-1">Lưu ý quan trọng</p>
-                        <p class="text-xs text-slate-400 leading-relaxed">Bạn phải chuyển khoản <strong>chính xác nội dung</strong> và <strong>số tiền</strong> để hệ thống tự động cộng tiền sau 1-3 phút. Nếu sau 10 phút chưa nhận được tiền, vui lòng liên hệ hỗ trợ.</p>
+
+                    <div class="glass p-6 rounded-[2.5rem] border border-yellow-500/20 bg-yellow-500/5">
+                        <div class="flex items-start gap-3">
+                            <div class="p-2 bg-yellow-500/20 rounded-lg text-yellow-500">
+                                <?php echo getIcon('shield', 'w-4 h-4'); ?>
+                            </div>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">
+                                <strong class="text-yellow-500 uppercase tracking-wider block mb-1">Lưu ý:</strong>
+                                Chuyển đúng <strong>nội dung</strong> và <strong>số tiền</strong>. Tiền sẽ vào tài khoản sau 1-3 phút.
+                            </p>
+                        </div>
                     </div>
                 </div>
-
-                <a href="history.php" class="inline-flex items-center gap-2 text-slate-500 hover:text-white font-bold transition-all">
-                    <?php echo getIcon('history', 'w-5 h-5'); ?>
-                    Xem lịch sử nạp tiền
-                </a>
             </div>
+
+            <style>
+                @keyframes scan {
+                    0%, 100% { top: 16px; opacity: 0; }
+                    10% { opacity: 1; }
+                    90% { opacity: 1; }
+                    100% { top: calc(100% - 16px); opacity: 0; }
+                }
+                .animate-scan {
+                    animation: scan 3s linear infinite;
+                }
+            </style>
+
+            <script>
+                function copyText(text, btn) {
+                    navigator.clipboard.writeText(text);
+                    const original = btn.innerHTML;
+                    btn.innerHTML = '<?php echo getIcon("check", "w-4 h-4 text-green-500"); ?>';
+                    setTimeout(() => btn.innerHTML = original, 2000);
+                }
+
+                // Status Polling
+                let orderId = '<?php echo $order['id']; ?>';
+                let checkInterval = setInterval(async () => {
+                    try {
+                        const response = await fetch(`api/check-status.php?id=${orderId}`);
+                        const data = await response.json();
+                        
+                        if (data.status === 'completed') {
+                            document.getElementById('order-status').innerHTML = '<?php echo getIcon("check", "w-4 h-4 text-green-500"); ?> Thành công';
+                            document.getElementById('current-balance').innerHTML = data.new_balance;
+                            clearInterval(checkInterval);
+                            setTimeout(() => window.location.href = 'dashboard.php', 3000);
+                        } else if (data.status === 'cancelled') {
+                            document.getElementById('order-status').innerHTML = '<?php echo getIcon("x", "w-4 h-4 text-red-500"); ?> Đã hủy';
+                            clearInterval(checkInterval);
+                        } else {
+                            document.getElementById('order-status').innerHTML = '<svg class="animate-spin h-3 w-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Đang chờ...';
+                        }
+                    } catch (e) {
+                        console.error('Status check failed');
+                    }
+                }, 1000);
+
+                // Expiry Timer
+                let timeLeft = 20 * 60;
+                let timerInterval = setInterval(() => {
+                    timeLeft--;
+                    let mins = Math.floor(timeLeft / 60);
+                    let secs = timeLeft % 60;
+                    document.getElementById('expiry-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerInterval);
+                        document.getElementById('expiry-timer').innerText = 'Hết hạn';
+                    }
+                }, 1000);
+            </script>
         <?php endif; ?>
     </main>
     <script src="../assets/js/transitions.js"></script>
