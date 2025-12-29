@@ -47,12 +47,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['id'
 $deposits = readJSON('deposits');
 $msg = $_GET['msg'] ?? '';
 
+// Pagination and Filtering logic
+$statusFilter = $_GET['status'] ?? 'all';
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 10;
+
+$filteredDeposits = array_filter($deposits, function($d) use ($statusFilter) {
+    if ($statusFilter === 'all') return true;
+    return ($d['status'] ?? '') === $statusFilter;
+});
+
+// Sort by date descending
+usort($filteredDeposits, function($a, $b) {
+    return strtotime($b['created_at'] ?? '0') - strtotime($a['created_at'] ?? '0');
+});
+
+$totalFiltered = count($filteredDeposits);
+$totalPages = ceil($totalFiltered / $perPage);
+$page = max(1, min($page, $totalPages));
+$offset = ($page - 1) * $perPage;
+$pagedDeposits = array_slice($filteredDeposits, $offset, $perPage);
+
 // Statistics
 $totalPending = 0;
 $totalApprovedAmount = 0;
 foreach ($deposits as $d) {
-    if ($d['status'] === 'pending') $totalPending++;
-    if ($d['status'] === 'completed') $totalApprovedAmount += $d['amount'];
+    if (($d['status'] ?? '') === 'pending') $totalPending++;
+    if (($d['status'] ?? '') === 'completed') $totalApprovedAmount += ($d['amount'] ?? 0);
 }
 ?>
 <!DOCTYPE html>
@@ -108,8 +129,16 @@ foreach ($deposits as $d) {
         </div>
         <?php endif; ?>
 
+        <!-- Filters -->
+        <div class="flex flex-wrap gap-4 mb-6">
+            <a href="?status=all" class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all <?php echo $statusFilter === 'all' ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'glass text-slate-400 hover:bg-white/10'; ?>">Tất cả</a>
+            <a href="?status=pending" class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all <?php echo $statusFilter === 'pending' ? 'bg-yellow-500 text-black shadow-lg shadow-yellow-500/20' : 'glass text-slate-400 hover:bg-white/10'; ?>">Chờ duyệt</a>
+            <a href="?status=completed" class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all <?php echo $statusFilter === 'completed' ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' : 'glass text-slate-400 hover:bg-white/10'; ?>">Đã hoàn tất</a>
+            <a href="?status=cancelled" class="px-5 py-2.5 rounded-2xl text-xs font-bold transition-all <?php echo $statusFilter === 'cancelled' ? 'bg-red-500 text-white shadow-lg shadow-red-500/20' : 'glass text-slate-400 hover:bg-white/10'; ?>">Đã hủy</a>
+        </div>
+
         <!-- Main Table -->
-        <div class="glass rounded-[2.5rem] overflow-hidden border border-white/5">
+        <div class="glass rounded-[2.5rem] overflow-hidden border border-white/5 mb-6">
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
                     <thead class="bg-white/5 border-b border-white/5 text-slate-500 uppercase text-[10px] font-black tracking-widest">
@@ -123,17 +152,17 @@ foreach ($deposits as $d) {
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-white/5">
-                        <?php if (empty($deposits)): ?>
+                        <?php if (empty($pagedDeposits)): ?>
                         <tr>
                             <td colspan="6" class="px-8 py-20 text-center text-slate-500 italic">
                                 <div class="flex flex-col items-center gap-3">
                                     <?php echo getIcon('wallet', 'w-12 h-12 opacity-20'); ?>
-                                    <span class="font-medium">Hệ thống chưa ghi nhận giao dịch nào</span>
+                                    <span class="font-medium">Không tìm thấy giao dịch nào</span>
                                 </div>
                             </td>
                         </tr>
                         <?php else: ?>
-                            <?php foreach (array_reverse($deposits) as $d): ?>
+                            <?php foreach ($pagedDeposits as $d): ?>
                             <tr class="hover:bg-white/5 transition-colors group">
                                 <td class="px-8 py-6">
                                     <span class="font-mono text-[11px] bg-slate-800 px-3 py-1 rounded-full text-slate-300">
@@ -155,9 +184,9 @@ foreach ($deposits as $d) {
                                     <span class="text-slate-400 text-xs font-medium"><?php echo htmlspecialchars($d['created_at'] ?? '---'); ?></span>
                                 </td>
                                 <td class="px-8 py-6">
-                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500/10 text-<?php echo ($d['status'] === 'completed' ? 'green' : ($d['status'] === 'pending' ? 'yellow' : 'red')); ?>-500">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-current <?php echo ($d['status'] === 'pending' ? 'animate-pulse' : ''); ?>"></span>
-                                        <span class="text-[10px] font-black uppercase tracking-tighter"><?php echo $d['status']; ?></span>
+                                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-<?php echo (($d['status'] ?? '') === 'completed' ? 'green' : (($d['status'] ?? '') === 'pending' ? 'yellow' : 'red')); ?>-500/10 text-<?php echo (($d['status'] ?? '') === 'completed' ? 'green' : (($d['status'] ?? '') === 'pending' ? 'yellow' : 'red')); ?>-500">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-current <?php echo (($d['status'] ?? '') === 'pending' ? 'animate-pulse' : ''); ?>"></span>
+                                        <span class="text-[10px] font-black uppercase tracking-tighter"><?php echo $d['status'] ?? 'unknown'; ?></span>
                                     </div>
                                 </td>
                             <td class="px-8 py-6">
@@ -170,7 +199,7 @@ foreach ($deposits as $d) {
                                     </form>
                                     <?php else: ?>
                                     <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-1">
-                                        <?php echo getIcon('check', 'w-3 h-3'); ?> Hoàn tất
+                                        <?php echo getIcon('check', 'w-3 h-3'); ?> <?php echo ($d['status'] ?? '') === 'completed' ? 'Hoàn tất' : 'Đã hủy'; ?>
                                     </div>
                                     <?php endif; ?>
                                 </div>
@@ -182,6 +211,18 @@ foreach ($deposits as $d) {
                 </table>
             </div>
         </div>
+
+        <!-- Pagination -->
+        <?php if ($totalPages > 1): ?>
+        <div class="flex justify-center items-center gap-2 mb-12">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?status=<?php echo $statusFilter; ?>&page=<?php echo $i; ?>" 
+                   class="w-10 h-10 flex items-center justify-center rounded-xl font-bold text-xs transition-all <?php echo $i === $page ? 'bg-blue-500 text-white shadow-lg shadow-blue-500/20' : 'glass text-slate-400 hover:bg-white/10'; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </body>
 </html>
