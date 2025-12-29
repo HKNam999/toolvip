@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
                 $description = 'NAP' . strtoupper(generateRandomString(6));
                 
                 $order = [
+                    'id' => $order_id,
                     'order_id' => $order_id,
                     'user_id' => $_SESSION['user_id'],
                     'username' => $_SESSION['username'],
@@ -269,6 +270,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
                                 <p class="font-black text-slate-200"><?php echo $order['bank_name']; ?></p>
                             </div>
                             <button onclick="navigator.clipboard.writeText('<?php echo $order['bank_name']; ?>')" class="p-2 hover:text-yellow-500 transition-colors"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
+                        </div>
+                        <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
+                            <div class="text-left">
+                                <p class="text-[10px] text-slate-500 font-black uppercase tracking-widest mb-1">Mã giao dịch</p>
+                                <p class="font-black text-slate-200 text-xl tracking-wider"><?php echo $order['id']; ?></p>
+                            </div>
+                            <button onclick="navigator.clipboard.writeText('<?php echo $order['id']; ?>')" class="p-2 hover:text-yellow-500 transition-colors"><?php echo getIcon('copy', 'w-5 h-5'); ?></button>
                         </div>
                         <div class="glass p-5 rounded-2xl border border-white/10 flex justify-between items-center group hover:bg-white/5 transition-all">
                             <div class="text-left">
