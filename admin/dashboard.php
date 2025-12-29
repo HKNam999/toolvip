@@ -38,12 +38,13 @@ $recentDeposits = array_slice(array_reverse($deposits), 0, 5);
     <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
         html {
-            zoom: 0.9;
+            zoom: 0.8;
         }
         body { 
             background-color: #0f172a; 
             color: #f8fafc; 
             font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
         }
         .glass { 
             background: rgba(255, 255, 255, 0.05); 
@@ -53,6 +54,7 @@ $recentDeposits = array_slice(array_reverse($deposits), 0, 5);
         .admin-card {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(249, 115, 22, 0.1) 100%);
             border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 1.25rem;
         }
     </style>
 </head>
