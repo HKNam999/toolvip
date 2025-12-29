@@ -35,6 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/transitions.css">
     <style>
@@ -98,12 +99,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <div>
                 <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Mật khẩu</label>
-                <div class="relative group">
+                <div class="relative group" x-data="{ show: false }">
                     <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-yellow-500 transition-colors">
                         <?php echo getIcon('shield', 'w-5 h-5'); ?>
                     </div>
-                    <input type="password" name="password" required placeholder="Nhập mật khẩu..." 
-                        class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold">
+                    <input :type="show ? 'text' : 'password'" name="password" required placeholder="Nhập mật khẩu..." 
+                        class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-12 py-4 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold">
+                    <button type="button" @click="show = !show" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors">
+                        <template x-if="!show">
+                            <?php echo getIcon('eye', 'w-5 h-5'); ?>
+                        </template>
+                        <template x-if="show">
+                            <?php echo getIcon('eye-off', 'w-5 h-5'); ?>
+                        </template>
+                    </button>
                 </div>
             </div>
             

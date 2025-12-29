@@ -32,9 +32,7 @@ usort($userKeys, function($a, $b) {
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        html {
-            zoom: 0.9;
-        }
+        html { zoom: 0.9; }
         body { 
             background-color: #0f172a; 
             color: #f8fafc; 
@@ -48,18 +46,18 @@ usort($userKeys, function($a, $b) {
             backdrop-filter: blur(16px); 
             border: 1px solid rgba(255, 255, 255, 0.1); 
         }
-        .icon-box {
-            background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(249, 115, 22, 0.2) 100%);
-            border: 1px solid rgba(251, 191, 36, 0.3);
-        }
         .text-gradient {
             background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .tab-active {
+            background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%);
+            color: #000;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col" x-data="{ activeTab: 'deposit', search: '' }">
     <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <a href="dashboard.php" class="flex items-center gap-2">
@@ -76,104 +74,92 @@ usort($userKeys, function($a, $b) {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
-            
-            <div x-show="open" 
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
-                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave="transition ease-in duration-150"
-                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                 x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
-                 @click.away="open = false" 
-                 class="absolute right-6 top-20 w-64 bg-slate-900/95 backdrop-blur-xl rounded-[1.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-3 overflow-hidden z-[60]" 
-                 style="display: none;">
-                <div class="px-4 py-3 border-b border-white/5 mb-2">
-                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Tài khoản</p>
-                    <p class="text-sm font-bold text-slate-200 truncate"><?php echo htmlspecialchars($_SESSION['username']); ?></p>
-                </div>
+            <div x-show="open" @click.away="open = false" class="absolute right-6 top-20 w-64 bg-slate-900/95 backdrop-blur-xl rounded-[1.5rem] border border-white/10 shadow-2xl py-3 z-[60]" style="display: none;">
                 <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
-                    <?php echo getIcon('home', 'w-5 h-5 text-yellow-500'); ?>
-                    Trang chủ
+                    <?php echo getIcon('home', 'w-5 h-5 text-yellow-500'); ?> Trang chủ
                 </a>
                 <a href="deposit.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
-                    <?php echo getIcon('wallet', 'w-5 h-5 text-orange-500'); ?>
-                    Nạp tiền
+                    <?php echo getIcon('wallet', 'w-5 h-5 text-orange-500'); ?> Nạp tiền
                 </a>
                 <a href="buy-key.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
-                    <?php echo getIcon('key', 'w-5 h-5 text-blue-500'); ?>
-                    Mua Key
+                    <?php echo getIcon('key', 'w-5 h-5 text-blue-500'); ?> Mua Key
                 </a>
                 <a href="history.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all border-b border-white/5">
-                    <?php echo getIcon('history', 'w-5 h-5 text-purple-500'); ?>
-                    Lịch sử
+                    <?php echo getIcon('history', 'w-5 h-5 text-purple-500'); ?> Lịch sử
                 </a>
                 <a href="../logout.php" class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 text-sm font-bold transition-all">
-                    <?php echo getIcon('logout', 'w-5 h-5'); ?>
-                    Đăng xuất
+                    <?php echo getIcon('logout', 'w-5 h-5'); ?> Đăng xuất
                 </a>
             </div>
         </div>
     </nav>
 
-    <main class="p-6 max-w-7xl mx-auto w-full mt-6">
-        <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-10 relative overflow-hidden">
-            <div class="absolute -right-12 -top-12 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl"></div>
-            
-            <div class="flex items-center gap-4 relative z-10">
-                <a href="dashboard.php" class="p-2.5 bg-slate-800/80 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
-                    <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                    </svg>
-                </a>
+    <main class="p-6 max-w-7xl mx-auto w-full mt-6 flex-grow">
+        <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-8 relative overflow-hidden">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                     <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
                         <?php echo getIcon('history', 'w-6 h-6'); ?>
                     </div>
                     <div>
                         <h2 class="text-2xl font-black">Lịch Sử</h2>
-                        <p class="text-xs text-slate-400">Theo dõi giao dịch</p>
+                        <p class="text-xs text-slate-400 uppercase tracking-widest font-bold">Quản lý giao dịch của bạn</p>
                     </div>
+                </div>
+                
+                <div class="flex bg-white/5 p-1.5 rounded-2xl border border-white/10">
+                    <button @click="activeTab = 'deposit'" :class="activeTab === 'deposit' ? 'tab-active shadow-lg shadow-orange-500/20' : 'text-slate-400 hover:text-white'" class="px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all">
+                        Lịch sử nạp
+                    </button>
+                    <button @click="activeTab = 'key'" :class="activeTab === 'key' ? 'tab-active shadow-lg shadow-orange-500/20' : 'text-slate-400 hover:text-white'" class="px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-widest transition-all">
+                        Lịch sử mua key
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Lịch sử nạp tiền -->
-            <div class="glass p-8 rounded-[2.5rem] border border-white/5">
-                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
-                    <div class="p-3 icon-box rounded-2xl text-yellow-500">
-                        <?php echo getIcon('wallet', 'w-6 h-6'); ?>
-                    </div>
-                    Lịch Sử Nạp Tiền
-                </h3>
+        <!-- Filters & Search -->
+        <div class="mb-6 flex flex-col md:flex-row gap-4">
+            <div class="relative flex-grow">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
+                    <?php echo getIcon('search', 'w-5 h-5'); ?>
+                </div>
+                <input type="text" x-model="search" placeholder="Tìm kiếm mã giao dịch, số tiền..." class="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:border-yellow-500/50 focus:bg-white/10 transition-all font-semibold text-sm">
+            </div>
+        </div>
+
+        <!-- Deposit History Tab -->
+        <div x-show="activeTab === 'deposit'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+            <div class="glass rounded-[2.5rem] border border-white/5 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left">
                         <thead>
-                            <tr class="border-b border-white/10">
-                                <th class="pb-2">Mã đơn</th>
-                                <th class="pb-2">Số tiền</th>
-                                <th class="pb-2">Trạng thái</th>
-                                <th class="pb-2">Thời gian</th>
+                            <tr class="bg-white/5 border-b border-white/10">
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Mã đơn</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Số tiền</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Trạng thái</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Thời gian</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-white/5">
                             <?php if (empty($userDeposits)): ?>
-                                <tr><td colspan="4" class="py-4 text-center text-gray-500">Chưa có giao dịch nào.</td></tr>
+                                <tr><td colspan="4" class="px-8 py-12 text-center text-slate-500 font-bold">Chưa có giao dịch nạp tiền nào.</td></tr>
                             <?php else: ?>
                                 <?php foreach ($userDeposits as $d): ?>
-                                    <tr class="border-b border-white/5">
-                                        <td class="py-3"><?php echo $d['order_id']; ?></td>
-                                        <td class="py-3 font-bold text-green-400"><?php echo formatMoney($d['amount']); ?></td>
-                                        <td class="py-3">
+                                    <tr class="hover:bg-white/[0.02] transition-colors" 
+                                        x-show="'<?php echo strtolower($d['order_id'] . $d['amount']); ?>'.includes(search.toLowerCase())">
+                                        <td class="px-8 py-5 font-mono text-yellow-500 font-bold"><?php echo $d['order_id']; ?></td>
+                                        <td class="px-8 py-5 font-black text-white"><?php echo formatMoney($d['amount']); ?></td>
+                                        <td class="px-8 py-5">
                                             <?php if ($d['status'] === 'pending'): ?>
-                                                <span class="text-yellow-500">Chờ duyệt</span>
+                                                <span class="px-3 py-1 bg-yellow-500/10 text-yellow-500 rounded-lg text-xs font-black border border-yellow-500/20">CHỜ DUYỆT</span>
                                             <?php elseif ($d['status'] === 'completed'): ?>
-                                                <span class="text-green-500">Thành công</span>
+                                                <span class="px-3 py-1 bg-green-500/10 text-green-500 rounded-lg text-xs font-black border border-green-500/20">THÀNH CÔNG</span>
                                             <?php else: ?>
-                                                <span class="text-red-500">Đã hủy</span>
+                                                <span class="px-3 py-1 bg-red-500/10 text-red-500 rounded-lg text-xs font-black border border-red-500/20">ĐÃ HỦY</span>
                                             <?php endif; ?>
                                         </td>
-                                        <td class="py-3 text-gray-400"><?php echo $d['created_at']; ?></td>
+                                        <td class="px-8 py-5 text-slate-400 text-sm font-semibold"><?php echo date('H:i d/m/Y', strtotime($d['created_at'])); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -181,37 +167,43 @@ usort($userKeys, function($a, $b) {
                     </table>
                 </div>
             </div>
+        </div>
 
-            <!-- Lịch sử mua key -->
-            <div class="glass p-8 rounded-[2.5rem] border border-white/5">
-                <h3 class="text-xl font-black mb-6 flex items-center gap-3">
-                    <div class="p-3 icon-box rounded-2xl text-orange-500">
-                        <?php echo getIcon('key', 'w-6 h-6'); ?>
-                    </div>
-                    Lịch Sử Mua Key
-                </h3>
+        <!-- Key History Tab -->
+        <div x-show="activeTab === 'key'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0">
+            <div class="glass rounded-[2.5rem] border border-white/5 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left">
                         <thead>
-                            <tr class="border-b border-white/10">
-                                <th class="pb-2">Mã Key</th>
-                                <th class="pb-2">Gói</th>
-                                <th class="pb-2">SL</th>
-                                <th class="pb-2">Tổng tiền</th>
-                                <th class="pb-2">Thời gian</th>
+                            <tr class="bg-white/5 border-b border-white/10">
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Mã Key</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Gói dịch vụ</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Tổng tiền</th>
+                                <th class="px-8 py-5 text-xs font-black uppercase tracking-widest text-slate-500">Thời gian</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="divide-y divide-white/5">
                             <?php if (empty($userKeys)): ?>
-                                <tr><td colspan="5" class="py-4 text-center text-gray-500">Chưa có giao dịch nào.</td></tr>
+                                <tr><td colspan="4" class="px-8 py-12 text-center text-slate-500 font-bold">Chưa có giao dịch mua key nào.</td></tr>
                             <?php else: ?>
                                 <?php foreach ($userKeys as $k): ?>
-                                    <tr class="border-b border-white/5">
-                                        <td class="py-3 font-mono text-yellow-500"><?php echo $k['key_code']; ?></td>
-                                        <td class="py-3"><?php echo $k['package_name']; ?></td>
-                                        <td class="py-3"><?php echo $k['quantity']; ?></td>
-                                        <td class="py-3 font-bold"><?php echo formatMoney($k['total_price']); ?></td>
-                                        <td class="py-3 text-gray-400"><?php echo $k['created_at']; ?></td>
+                                    <tr class="hover:bg-white/[0.02] transition-colors"
+                                        x-show="'<?php echo strtolower($k['key_code'] . $k['package_name']); ?>'.includes(search.toLowerCase())">
+                                        <td class="px-8 py-5">
+                                            <div class="flex items-center gap-2">
+                                                <span class="font-mono text-orange-500 font-bold"><?php echo $k['key_code']; ?></span>
+                                                <button onclick="navigator.clipboard.writeText('<?php echo $k['key_code']; ?>')" class="p-1.5 hover:bg-white/10 rounded-md transition-colors text-slate-500 hover:text-white" title="Copy key">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-5">
+                                            <span class="px-3 py-1 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-black border border-blue-500/20">
+                                                <?php echo strtoupper($k['package_name']); ?>
+                                            </span>
+                                        </td>
+                                        <td class="px-8 py-5 font-black text-white"><?php echo formatMoney($k['total_price']); ?></td>
+                                        <td class="px-8 py-5 text-slate-400 text-sm font-semibold"><?php echo date('H:i d/m/Y', strtotime($k['created_at'])); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -221,5 +213,6 @@ usort($userKeys, function($a, $b) {
             </div>
         </div>
     </main>
+    <script src="../assets/js/transitions.js"></script>
 </body>
 </html>
