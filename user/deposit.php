@@ -88,6 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
 <body class="min-h-screen flex flex-col">
     <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
+            <a href="dashboard.php" class="p-2.5 bg-slate-800/50 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
+                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </a>
             <a href="dashboard.php" class="flex items-center gap-2">
                 <div class="p-1 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-lg">
                     <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-md bg-black">
