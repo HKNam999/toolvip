@@ -133,71 +133,28 @@ if (!$currentUser) {
     </nav>
 
     <main class="p-6 max-w-7xl mx-auto w-full mt-6">
-        <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-12 relative overflow-hidden">
-            <div class="absolute -right-12 -top-12 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
-            
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-                <div class="flex items-center gap-6">
-                    <a href="../index.php" class="p-4 bg-slate-800/80 backdrop-blur-md rounded-2xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-xl group">
-                        <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                        </svg>
-                    </a>
-                    <div>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Chào mừng quay trở lại,</p>
-                        <h2 class="text-4xl font-black text-slate-100 tracking-tight"><?php echo htmlspecialchars($currentUser['username']); ?></h2>
-                    </div>
-                </div>
-                
-                <div class="flex flex-wrap gap-8">
-                    <div class="glass p-4 rounded-2xl border-white/5 flex items-center gap-4">
-                        <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
-                            <?php echo getIcon('user', 'w-6 h-6'); ?>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">ID Tài khoản</p>
-                            <p class="text-sm font-mono font-bold text-slate-300"><?php echo $currentUser['id']; ?></p>
-                        </div>
-                    </div>
-                    <div class="glass p-4 rounded-2xl border-white/5 flex items-center gap-4">
-                        <div class="p-3 bg-green-500/10 rounded-xl text-green-500">
-                            <?php echo getIcon('wallet', 'w-6 h-6'); ?>
-                        </div>
-                        <div>
-                            <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">Số dư khả dụng</p>
-                            <p class="text-xl font-black text-gradient"><?php echo formatMoney($currentUser['balance']); ?></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Account Info Section -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             <!-- VIP Card -->
-            <div class="lg:col-span-2 vip-card p-8 rounded-[2.5rem] shadow-2xl flex flex-col justify-between min-h-[200px]">
+            <div class="lg:col-span-2 vip-card p-8 rounded-[2.5rem] shadow-2xl flex flex-col justify-between min-h-[240px]">
                 <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Hạng thành viên</p>
-                        <h2 class="text-2xl font-black text-yellow-500 flex items-center gap-2">
-                            <?php echo getIcon('crown', 'w-6 h-6'); ?>
-                            VIP MEMBER
-                        </h2>
+                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] mb-1">Tài khoản thành viên</p>
+                        <h2 class="text-3xl font-black text-slate-100 tracking-tight"><?php echo htmlspecialchars($currentUser['username']); ?></h2>
+                    </div>
+                    <div class="p-3 bg-yellow-500/10 rounded-2xl text-yellow-500 border border-yellow-500/20 relative z-0">
+                        <?php echo getIcon('user', 'w-8 h-8'); ?>
                     </div>
                 </div>
                 
                 <div class="flex flex-wrap gap-12 mt-8">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-500">
-                            <?php echo getIcon('check', 'w-6 h-6'); ?>
-                        </div>
-                        <p class="text-xs font-bold text-slate-400">Hệ thống đang hoạt động</p>
+                    <div>
+                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Mã định danh ID</p>
+                        <p class="text-xl font-mono font-bold text-slate-300"><?php echo $currentUser['id']; ?></p>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-500">
-                            <?php echo getIcon('shield', 'w-6 h-6'); ?>
-                        </div>
-                        <p class="text-xs font-bold text-slate-400">Bảo mật đa lớp</p>
+                    <div>
+                        <p class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-1">Số dư hiện tại</p>
+                        <p class="text-2xl font-black text-gradient"><?php echo formatMoney($currentUser['balance']); ?></p>
                     </div>
                 </div>
 
