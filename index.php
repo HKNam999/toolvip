@@ -139,5 +139,6 @@ require_once 'core/functions.php';
         <p>&copy; 2026 TOOLTX2026. Thiết kế bởi Manus Team.</p>
     </footer>
     <script src="assets/js/transitions.js"></script>
+    <script src="assets/js/security.js"></script>
 </body>
 </html>

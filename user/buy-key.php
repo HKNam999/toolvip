@@ -20,7 +20,10 @@ $error = '';
 $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $package_id = (int)$_POST['package_id'];
+    if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Lỗi xác thực CSRF. Vui lòng thử lại.';
+    } else {
+        $package_id = (int)$_POST['package_id'];
     $quantity = (int)$_POST['quantity'];
     
     $selectedPackage = null;
@@ -83,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -93,10 +97,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/transitions.css">
     <style>
-        html {
-            zoom: 0.9;
-        }
+        html { zoom: 0.9; }
         body { 
             background-color: #0f172a; 
             color: #f8fafc; 
@@ -267,6 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         
                         <form method="POST" class="mt-auto space-y-4">
+                            <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
                             <input type="hidden" name="package_id" value="<?php echo $p['id']; ?>">
                             <div class="flex gap-3">
                                 <div class="w-24 relative">
@@ -340,5 +344,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </main>
+    <script src="../assets/js/security.js"></script>
 </body>
 </html>

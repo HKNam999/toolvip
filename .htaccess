@@ -1,0 +1,29 @@
+# Ngăn chặn truy cập trực tiếp vào các file JSON
+<FilesMatch "\.json$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Ngăn chặn liệt kê thư mục
+Options -Indexes
+
+# Bật Rewrite Engine
+RewriteEngine On
+
+# Làm đẹp đường dẫn cho các trang chính
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# User routes
+RewriteRule ^login$ login.php [L]
+RewriteRule ^register$ register.php [L]
+RewriteRule ^logout$ logout.php [L]
+RewriteRule ^dashboard$ user/dashboard.php [L]
+RewriteRule ^buy-key$ user/buy-key.php [L]
+RewriteRule ^deposit$ user/deposit.php [L]
+RewriteRule ^history$ user/history.php [L]
+
+# Admin routes
+RewriteRule ^admin/login$ admin/login.php [L]
+RewriteRule ^admin/dashboard$ admin/dashboard.php [L]
+RewriteRule ^admin/banks$ admin/banks.php [L]

@@ -253,5 +253,6 @@ if (!$currentUser) {
         </div>
     </main>
     <script src="../assets/js/transitions.js"></script>
+    <script src="../assets/js/security.js"></script>
 </body>
 </html>

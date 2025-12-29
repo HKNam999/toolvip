@@ -3,6 +3,7 @@ session_start();
 
 define('DATA_PATH', dirname(__DIR__) . '/data/');
 require_once __DIR__ . '/icons.php';
+require_once __DIR__ . '/auth.php';
 
 function readJSON($filename) {
     $path = DATA_PATH . $filename . '.json';

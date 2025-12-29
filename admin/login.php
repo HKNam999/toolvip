@@ -10,7 +10,10 @@ if (isAdminLoggedIn()) {
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = sanitizeInput($_POST['username'] ?? '');
+    if (!verifyCSRFToken($_POST['csrf_token'] ?? '')) {
+        $error = 'Lỗi xác thực CSRF. Vui lòng thử lại.';
+    } else {
+        $username = sanitizeInput($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
 
     if (empty($username) || empty($password)) {
@@ -18,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (loginAdmin($username, $password)) {
         header('Location: dashboard.php');
         exit;
-    } else {
-        $error = 'Tên đăng nhập hoặc mật khẩu admin không chính xác.';
+        } else {
+            $error = 'Tên đăng nhập hoặc mật khẩu admin không chính xác.';
+        }
     }
 }
 ?>
@@ -89,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form method="POST" class="space-y-6 relative">
+            <input type="hidden" name="csrf_token" value="<?php echo generateCSRFToken(); ?>">
             <div>
                 <label class="block text-xs font-black uppercase tracking-widest text-slate-500 mb-2 ml-1">Tên đăng nhập Admin</label>
                 <div class="relative group">
