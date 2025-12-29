@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['id'
     
     $found = false;
     foreach ($deposits as &$d) {
-        if (isset($d['id']) && $d['id'] == $id && isset($d['status']) && $d['status'] === 'pending') {
+        if (isset($d['id']) && (string)$d['id'] === (string)$id && isset($d['status']) && $d['status'] === 'pending') {
             if ($action === 'approve') {
                 $d['status'] = 'completed';
                 $d['updated_at'] = date('Y-m-d H:i:s');
