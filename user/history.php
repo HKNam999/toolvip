@@ -45,11 +45,6 @@ usort($userKeys, function($a, $b) {
 <body class="min-h-screen flex flex-col">
     <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <a href="dashboard.php" class="p-2.5 bg-slate-800/50 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
-                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-            </a>
             <a href="dashboard.php" class="flex items-center gap-2">
                 <div class="p-1.5 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
                     <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-lg bg-black">
@@ -104,10 +99,26 @@ usort($userKeys, function($a, $b) {
     </nav>
 
     <main class="p-6 max-w-7xl mx-auto w-full mt-6">
-        <h2 class="text-3xl font-black mb-8 flex items-center gap-3">
-            <span class="p-2 bg-yellow-500/10 rounded-xl text-yellow-500"><?php echo getIcon('history', 'w-6 h-6'); ?></span>
-            Lịch Sử Giao Dịch
-        </h2>
+        <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-10 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-purple-500/5 rounded-full blur-3xl"></div>
+            
+            <div class="flex items-center gap-6 relative z-10">
+                <a href="dashboard.php" class="p-4 bg-slate-800/80 backdrop-blur-md rounded-2xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-xl group">
+                    <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </a>
+                <div class="flex items-center gap-5">
+                    <div class="p-4 bg-yellow-500/10 rounded-2xl text-yellow-500">
+                        <?php echo getIcon('history', 'w-8 h-8'); ?>
+                    </div>
+                    <div>
+                        <h2 class="text-3xl font-black">Lịch Sử Giao Dịch</h2>
+                        <p class="text-sm text-slate-400">Theo dõi dòng tiền và mã key đã mua</p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Lịch sử nạp tiền -->

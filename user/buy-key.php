@@ -132,11 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body class="min-h-screen flex flex-col">
     <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
-            <a href="dashboard.php" class="p-2.5 bg-slate-800/50 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg group">
-                <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-                </svg>
-            </a>
             <a href="dashboard.php" class="flex items-center gap-2">
                 <div class="p-1.5 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-xl shadow-lg shadow-orange-500/20">
                     <img src="../assets/images/logo-vip.png" alt="Logo" class="h-8 w-8 rounded-lg bg-black">
@@ -191,27 +186,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </nav>
 
     <main class="p-6 max-w-7xl mx-auto w-full mt-8">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-            <div>
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
-                    <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
-                    <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest">Hệ thống kích hoạt tự động</span>
+        <div class="glass p-8 rounded-[2.5rem] border border-white/5 mb-12 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl"></div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <div class="flex items-center gap-6">
+                    <a href="dashboard.php" class="p-4 bg-slate-800/80 backdrop-blur-md rounded-2xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-xl group">
+                        <svg class="w-6 h-6 transition-transform group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </a>
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-3">
+                            <span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
+                            <span class="text-[10px] font-black text-orange-500 uppercase tracking-widest">Hệ thống kích hoạt tự động</span>
+                        </div>
+                        <h2 class="text-4xl font-black tracking-tight mb-2">Mua Key Kích Hoạt</h2>
+                        <p class="text-slate-400">Chọn gói thời gian để bắt đầu làm chủ cuộc chơi</p>
+                    </div>
                 </div>
-                <h2 class="text-4xl font-black tracking-tight mb-2">Mua Key Kích Hoạt</h2>
-                <p class="text-slate-400">Chọn gói thời gian để bắt đầu làm chủ cuộc chơi</p>
-            </div>
-            <div class="glass p-4 rounded-2xl flex items-center gap-4">
-                <div class="p-3 bg-yellow-500/10 rounded-xl text-yellow-500">
-                    <?php echo getIcon('wallet', 'w-6 h-6'); ?>
-                </div>
-                <div>
-                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Số dư của bạn</p>
-                    <?php 
-                        $users = readJSON('users');
-                        $balance = 0;
-                        foreach($users as $u) if($u['id'] === $_SESSION['user_id']) $balance = $u['balance'];
-                    ?>
-                    <p class="text-xl font-black text-gradient"><?php echo formatMoney($balance); ?></p>
+                
+                <div class="glass p-5 rounded-3xl flex items-center gap-4 bg-white/5 border-white/10">
+                    <div class="p-3 bg-yellow-500/10 rounded-2xl text-yellow-500">
+                        <?php echo getIcon('wallet', 'w-7 h-7'); ?>
+                    </div>
+                    <div>
+                        <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest mb-1">Số dư hiện có</p>
+                        <?php 
+                            $users = readJSON('users');
+                            $balance = 0;
+                            foreach($users as $u) if($u['id'] === $_SESSION['user_id']) $balance = $u['balance'];
+                        ?>
+                        <p class="text-2xl font-black text-gradient"><?php echo formatMoney($balance); ?></p>
+                    </div>
                 </div>
             </div>
         </div>
