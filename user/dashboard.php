@@ -88,13 +88,22 @@ if (!$currentUser) {
         </div>
         
         <div class="flex items-center gap-4" x-data="{ open: false }">
-            <button @click="open = !open" class="p-2.5 glass rounded-xl text-slate-400 hover:bg-white/5 hover:text-white transition-all border border-white/5">
+            <button @click="open = !open" class="p-2.5 bg-slate-800/80 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
             
-            <div x-show="open" @click.away="open = false" class="absolute right-6 top-20 w-56 glass rounded-[1.5rem] border border-white/10 shadow-2xl py-2 overflow-hidden z-[60]" style="display: none;">
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+                 @click.away="open = false" 
+                 class="absolute right-6 top-20 w-64 bg-slate-900/95 backdrop-blur-xl rounded-[1.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-3 overflow-hidden z-[60]" 
+                 style="display: none;">
                 <div class="px-4 py-3 border-b border-white/5 mb-2">
                     <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Tài khoản</p>
                     <p class="text-sm font-bold text-slate-200 truncate"><?php echo htmlspecialchars($currentUser['username']); ?></p>

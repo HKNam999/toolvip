@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nạp Tiền - TOOLTX2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -85,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6">
+    <nav class="p-4 glass border-b border-white/5 flex justify-between items-center px-6 md:px-12 sticky top-0 z-50">
         <div class="flex items-center gap-3">
             <a href="dashboard.php" class="flex items-center gap-2">
                 <div class="p-1 bg-gradient-to-br from-yellow-400 to-orange-600 rounded-lg">
@@ -94,10 +95,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['amount'])) {
                 <span class="text-xl font-black tracking-tighter text-gradient">TOOLTX2026</span>
             </a>
         </div>
-        <a href="dashboard.php" class="text-sm font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
-            <?php echo getIcon('home', 'w-5 h-5'); ?>
-            Quay lại
-        </a>
+        
+        <div class="flex items-center gap-4" x-data="{ open: false }">
+            <button @click="open = !open" class="p-2.5 bg-slate-800/80 backdrop-blur-md rounded-xl text-slate-400 hover:bg-slate-700/80 hover:text-white transition-all border border-white/10 shadow-lg">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+            
+            <div x-show="open" 
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 scale-95 translate-y-[-10px]"
+                 x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-150"
+                 x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 scale-95 translate-y-[-10px]"
+                 @click.away="open = false" 
+                 class="absolute right-6 top-20 w-64 bg-slate-900/95 backdrop-blur-xl rounded-[1.5rem] border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] py-3 overflow-hidden z-[60]" 
+                 style="display: none;">
+                <div class="px-4 py-3 border-b border-white/5 mb-2">
+                    <p class="text-[10px] text-slate-500 uppercase font-black tracking-widest">Tài khoản</p>
+                    <p class="text-sm font-bold text-slate-200 truncate"><?php echo htmlspecialchars($_SESSION['username']); ?></p>
+                </div>
+                <a href="dashboard.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('home', 'w-5 h-5 text-yellow-500'); ?>
+                    Trang chủ
+                </a>
+                <a href="deposit.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('wallet', 'w-5 h-5 text-orange-500'); ?>
+                    Nạp tiền
+                </a>
+                <a href="buy-key.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all">
+                    <?php echo getIcon('key', 'w-5 h-5 text-blue-500'); ?>
+                    Mua Key
+                </a>
+                <a href="history.php" class="flex items-center gap-3 px-4 py-3 hover:bg-white/5 text-sm font-semibold transition-all border-b border-white/5">
+                    <?php echo getIcon('history', 'w-5 h-5 text-purple-500'); ?>
+                    Lịch sử
+                </a>
+                <a href="../logout.php" class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 text-sm font-bold transition-all">
+                    <?php echo getIcon('logout', 'w-5 h-5'); ?>
+                    Đăng xuất
+                </a>
+            </div>
+        </div>
     </nav>
 
     <main class="p-6 max-w-4xl mx-auto w-full mt-8">
