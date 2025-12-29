@@ -25,7 +25,7 @@ function generateID($prefix = 'USER') {
 }
 
 function isLoggedIn() {
-    return isset($_SESSION['user_id']) && !isset($_SESSION['admin_id']);
+    return isset($_SESSION['user_id']);
 }
 
 function isAdminLoggedIn() {
