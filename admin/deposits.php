@@ -159,21 +159,21 @@ foreach ($deposits as $d) {
                                         <span class="text-[10px] font-black uppercase tracking-tighter"><?php echo $d['status']; ?></span>
                                     </div>
                                 </td>
-                                <td class="px-8 py-6">
-                                    <div class="flex justify-center gap-2">
-                                        <?php if ($d['status'] === 'pending'): ?>
-                                        <form method="POST" class="flex gap-2">
-                                            <input type="hidden" name="id" value="<?php echo $d['id']; ?>">
-                                            <button name="action" value="approve" class="px-4 py-2 btn-approve text-white rounded-xl hover:scale-105 transition-all text-[11px] font-black uppercase tracking-tighter shadow-lg shadow-green-500/20">Duyệt</button>
-                                            <button name="action" value="reject" class="px-4 py-2 btn-reject text-white rounded-xl hover:scale-105 transition-all text-[11px] font-black uppercase tracking-tighter shadow-lg shadow-red-500/20">Hủy</button>
-                                        </form>
-                                        <?php else: ?>
-                                        <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-1">
-                                            <?php echo getIcon('check', 'w-3 h-3'); ?> Hoàn tất
-                                        </div>
-                                        <?php endif; ?>
+                            <td class="px-8 py-6">
+                                <div class="flex justify-center gap-2">
+                                    <?php if (isset($d['status']) && $d['status'] === 'pending'): ?>
+                                    <form method="POST" class="flex gap-2">
+                                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($d['id'] ?? ''); ?>">
+                                        <button name="action" value="approve" class="px-4 py-2 btn-approve text-white rounded-xl hover:scale-105 transition-all text-[11px] font-black uppercase tracking-tighter shadow-lg shadow-green-500/20">Duyệt</button>
+                                        <button name="action" value="reject" class="px-4 py-2 btn-reject text-white rounded-xl hover:scale-105 transition-all text-[11px] font-black uppercase tracking-tighter shadow-lg shadow-red-500/20">Hủy</button>
+                                    </form>
+                                    <?php else: ?>
+                                    <div class="text-[10px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-1">
+                                        <?php echo getIcon('check', 'w-3 h-3'); ?> Hoàn tất
                                     </div>
-                                </td>
+                                    <?php endif; ?>
+                                </div>
+                            </td>
                             </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
